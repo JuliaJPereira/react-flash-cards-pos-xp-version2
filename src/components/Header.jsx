@@ -7,7 +7,7 @@ export default function Header({ children, size }) {
 
   return (
     <header>
-      <div className="bg-blue-200 mx-auto p-4">
+      <div className="bg-pink-100 mx-auto p-4">
         <h1 className={`text-center font-semibold ${fontSize}`}>{children}</h1>
       </div>
     </header>

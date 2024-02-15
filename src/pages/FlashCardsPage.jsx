@@ -44,7 +44,7 @@ export default function FlashCardsPage() {
 
   return (
     <>
-      <Header>react-flash-cards</Header>
+      <Header>react-flash-cards-v2</Header>
       <Main>
         <div className="text-center mb-4">
           <Button onButtonClick={handleButtonClick}>Embaralhar Cards</Button>
