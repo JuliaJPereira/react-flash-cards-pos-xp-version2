@@ -13,6 +13,7 @@
     "react-icons": "4.2.0",
     "react-scripts": "4.0.3",
     "react-spinners": "0.10.6",
+    "react-tabs": "4.3.0",
     "uuid": "8.3.2"
   },
   "devDependencies": {
