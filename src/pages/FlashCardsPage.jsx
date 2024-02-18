@@ -8,6 +8,8 @@ import { helperShuffleArray } from '../helpers/arrayHelpers';
 import RadioButton from '../components/RadioButton';
 import { apiGetAllFlashCards } from '../services/apiService';
 import { get } from '../services/httpService';
+import Loading from '../components/Loading';
+import Error from '../components/Error';
 
 export default function FlashCardsPage() {
   // BackEnd
@@ -17,6 +19,7 @@ export default function FlashCardsPage() {
   const [studyCards, setStudyCards] = useState([]);
 
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   const [radioButtonShowTitle, setRadioButtonShowTitle] = useState(true);
 
@@ -28,9 +31,16 @@ export default function FlashCardsPage() {
 
     // Sintaxe async/await
     async function getAllCards() {
-      const backEndAllCards = await apiGetAllFlashCards();
-      setAllCards(backEndAllCards);
-      setLoading(false);
+      try {
+        const backEndAllCards = await apiGetAllFlashCards();
+        setAllCards(backEndAllCards);
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+      }
     }
     getAllCards();
 
@@ -75,10 +85,19 @@ export default function FlashCardsPage() {
     setStudyCards(uptadedCards);
   }
 
-  return (
-    <>
-      <Header>react-flash-cards-v2</Header>
-      <Main>
+  let mainJsx = (
+    <div className="flex justify-center my-4">
+      <Loading />
+    </div>
+  );
+
+  if (error) {
+    mainJsx = <Error>{error}</Error>;
+  }
+
+  if (!loading) {
+    mainJsx = (
+      <>
         <div className="text-center mb-4">
           <Button onButtonClick={handleShuffle}>Embaralhar Cards</Button>
         </div>
@@ -114,7 +133,14 @@ export default function FlashCardsPage() {
             );
           })}
         </FlashCards>
-      </Main>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Header>react-flash-cards-v2</Header>
+      <Main>{mainJsx}</Main>
     </>
   );
 }
