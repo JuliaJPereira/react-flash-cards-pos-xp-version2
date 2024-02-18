@@ -1,16 +1,22 @@
 import FlashCard from '../components/FlashCard';
 import Header from './../components/Header';
 import Main from './../components/Main';
-import { allFlashCards } from '../data/allFlashCards';
 import FlashCards from '../components/FlashCards';
 import Button from '../components/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { helperShuffleArray } from '../helpers/arrayHelpers';
 import RadioButton from '../components/RadioButton';
+import { apiGetAllFlashCards } from '../services/apiService';
 
 export default function FlashCardsPage() {
-  const [allCards, setAllCards] = useState(allFlashCards);
+  const [allCards, setAllCards] = useState([]);
   const [radioButtonShowTitle, setRadioButtonShowTitle] = useState(true);
+
+  useEffect(() => {
+    apiGetAllFlashCards().then(allFlashCards => {
+      setAllCards(allFlashCards);
+    });
+  }, []);
 
   function handleButtonClick() {
     const shuffledCards = helperShuffleArray(allCards);
@@ -41,6 +47,10 @@ export default function FlashCardsPage() {
     uptadedCards[cardIndex].showTitle = !uptadedCards[cardIndex].showTitle;
     setAllCards(uptadedCards);
   }
+
+  // useEffect(() => {
+  //   apiGetAllFlashCards().then(setAllCards);
+  // }, []);
 
   return (
     <>
