@@ -88,7 +88,7 @@ export default function FlashCardsPage() {
   }
 
   function handleDeleteFlashCard(cardId) {
-    console.log(cardId);
+    setAllCards(allCards.filter(card => card.id !== cardId));
   }
 
   let mainJsx = (
