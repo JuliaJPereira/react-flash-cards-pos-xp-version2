@@ -7,8 +7,10 @@ import { useEffect, useState } from 'react';
 import { helperShuffleArray } from '../helpers/arrayHelpers';
 import RadioButton from '../components/RadioButton';
 import {
+  apiCreateFlashCard,
   apiDeleteFlashCard,
   apiGetAllFlashCards,
+  apiUpdateFlashCard,
 } from '../services/apiService';
 import Loading from '../components/Loading';
 import Error from '../components/Error';
@@ -16,7 +18,6 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import FlashCardItem from '../components/FlashCardItem';
 import FlashCardForm from '../components/FlashCardForm';
-import { getNewId } from '../services/idService';
 
 export default function FlashCardsPage() {
   // BackEnd
@@ -124,21 +125,42 @@ export default function FlashCardsPage() {
     setSelectedTab(tabIndex);
   }
 
-  function handlePersist({ title, description }) {
+  async function handlePersist({ title, description }) {
     if (createMode) {
-      const newFlashCard = { id: getNewId(), title, description };
-      setAllCards([...allCards, newFlashCard]);
+      try {
+        //BackEnd
+        const newFlashCardBackEnd = await apiCreateFlashCard(
+          title,
+          description
+        );
+        // FrontEnd
+        const newFlashCard = newFlashCardBackEnd;
+        setAllCards([...allCards, newFlashCard]);
+
+        setError('');
+      } catch (error) {
+        setError(error.message);
+      }
     } else {
-      setAllCards(
-        allCards.map(card => {
-          if (card.id === selectedFlashCard.id) {
-            return { ...card, title, description };
-          }
-          return card;
-        })
-      );
-      setSelectedFlashCard(null);
-      setCreateMode(true);
+      try {
+        // BackEnd
+        await apiUpdateFlashCard(selectedFlashCard.id, title, description);
+        // FrontEnd
+        setAllCards(
+          allCards.map(card => {
+            if (card.id === selectedFlashCard.id) {
+              return { ...card, title, description };
+            }
+            return card;
+          })
+        );
+        setSelectedFlashCard(null);
+        setCreateMode(true);
+
+        setError('');
+      } catch (error) {
+        setError(error.message);
+      }
     }
   }
 
