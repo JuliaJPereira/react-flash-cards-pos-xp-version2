@@ -116,7 +116,14 @@ export default function FlashCardsPage() {
       const newFlashCard = { id: getNewId(), title, description };
       setAllCards([...allCards, newFlashCard]);
     } else {
-      console.log('edição');
+      setAllCards(
+        allCards.map(card => {
+          if (card.id === selectedFlashCard.id) {
+            return { ...card, title, description };
+          }
+          return card;
+        })
+      );
     }
   }
 

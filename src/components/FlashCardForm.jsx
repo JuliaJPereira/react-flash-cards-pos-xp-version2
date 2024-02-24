@@ -19,8 +19,6 @@ export default function FlashCardForm({
     }
   }, [createMode]);
 
-  console.log(flashCard);
-
   function handleTitleChange(newTitle) {
     setTitle(newTitle);
   }
