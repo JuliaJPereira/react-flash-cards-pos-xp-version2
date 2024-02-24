@@ -124,6 +124,8 @@ export default function FlashCardsPage() {
           return card;
         })
       );
+      setSelectedFlashCard(null);
+      setCreateMode(true);
     }
   }
 
