@@ -12,6 +12,7 @@ import Error from '../components/Error';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import FlashCardItem from '../components/FlashCardItem';
+import FlashCardForm from '../components/FlashCardForm';
 
 export default function FlashCardsPage() {
   // BackEnd
@@ -23,6 +24,8 @@ export default function FlashCardsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [createMode, setCreateMode] = useState(true);
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedFlashCard, setSelectedFlashCard] = useState(null);
 
   const [radioButtonShowTitle, setRadioButtonShowTitle] = useState(true);
 
@@ -92,6 +95,16 @@ export default function FlashCardsPage() {
     setAllCards(allCards.filter(card => card.id !== cardId));
   }
 
+  function handleEditFlashCard(card) {
+    setCreateMode(false);
+    setSelectedTab(1);
+    setSelectedFlashCard(card);
+  }
+
+  function handleTabSelect(tabIndex) {
+    setSelectedTab(tabIndex);
+  }
+
   let mainJsx = (
     <div className="flex justify-center my-4">
       <Loading />
@@ -105,7 +118,7 @@ export default function FlashCardsPage() {
   if (!loading) {
     mainJsx = (
       <>
-        <Tabs>
+        <Tabs selectedIndex={selectedTab} onSelect={handleTabSelect}>
           <TabList>
             <Tab>Listagem</Tab>
             <Tab>Cadastro</Tab>
@@ -118,13 +131,16 @@ export default function FlashCardsPage() {
                 <FlashCardItem
                   key={flashCard.id}
                   onDelete={handleDeleteFlashCard}
+                  onEdit={handleEditFlashCard}
                 >
                   {flashCard}
                 </FlashCardItem>
               );
             })}
           </TabPanel>
-          <TabPanel>Cadastro</TabPanel>
+          <TabPanel>
+            <FlashCardForm createMode={createMode} />
+          </TabPanel>
           <TabPanel>
             <div className="text-center mb-4">
               <Button onButtonClick={handleShuffle}>Embaralhar Cards</Button>
