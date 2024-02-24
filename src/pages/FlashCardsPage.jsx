@@ -6,7 +6,10 @@ import Button from '../components/Button';
 import { useEffect, useState } from 'react';
 import { helperShuffleArray } from '../helpers/arrayHelpers';
 import RadioButton from '../components/RadioButton';
-import { apiGetAllFlashCards } from '../services/apiService';
+import {
+  apiDeleteFlashCard,
+  apiGetAllFlashCards,
+} from '../services/apiService';
 import Loading from '../components/Loading';
 import Error from '../components/Error';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -92,8 +95,16 @@ export default function FlashCardsPage() {
     setStudyCards(uptadedCards);
   }
 
-  function handleDeleteFlashCard(cardId) {
-    setAllCards(allCards.filter(card => card.id !== cardId));
+  async function handleDeleteFlashCard(cardId) {
+    try {
+      // Exclusão no BackEnd
+      await apiDeleteFlashCard(cardId);
+
+      // Exclusão no FrontEnd
+      setAllCards(allCards.filter(card => card.id !== cardId));
+    } catch (error) {
+      setError(error.message);
+    }
   }
 
   function handleEditFlashCard(card) {
