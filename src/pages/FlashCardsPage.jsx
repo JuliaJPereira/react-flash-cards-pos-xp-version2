@@ -110,6 +110,14 @@ export default function FlashCardsPage() {
     setSelectedTab(tabIndex);
   }
 
+  function handlePersist(createMode, title, description) {
+    if (createMode) {
+      console.log('inserção');
+    } else {
+      console.log('edição');
+    }
+  }
+
   let mainJsx = (
     <div className="flex justify-center my-4">
       <Loading />
@@ -149,7 +157,7 @@ export default function FlashCardsPage() {
                 Novo flash card
               </Button>
             </div>
-            <FlashCardForm createMode={createMode} />
+            <FlashCardForm createMode={createMode} onPersist={handlePersist} />
           </TabPanel>
           <TabPanel>
             <div className="text-center mb-4">
