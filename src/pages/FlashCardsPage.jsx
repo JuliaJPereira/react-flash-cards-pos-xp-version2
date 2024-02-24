@@ -102,6 +102,8 @@ export default function FlashCardsPage() {
 
       // Exclusão no FrontEnd
       setAllCards(allCards.filter(card => card.id !== cardId));
+
+      setError('');
     } catch (error) {
       setError(error.message);
     }
@@ -150,7 +152,7 @@ export default function FlashCardsPage() {
     mainJsx = <Error>{error}</Error>;
   }
 
-  if (!loading) {
+  if (!loading && !error) {
     mainJsx = (
       <>
         <Tabs selectedIndex={selectedTab} onSelect={handleTabSelect}>
