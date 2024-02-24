@@ -1,16 +1,17 @@
 import { getNewId } from '../services/idService';
 
-export default function TextInput({
+export default function TextArea({
   labelDescription = 'Descrição do label:',
-  inputValue = 'Valor padrão do input',
-  onInputChange = null,
+  textAreaValue = 'Valor padrão do text area',
+  onTextAreaChange = null,
   id = getNewId(),
-  autoFocus = false,
+  maxLength = 230,
+  rows = 4,
 }) {
   function handleInputChange({ currentTarget }) {
-    if (onInputChange) {
+    if (onTextAreaChange) {
       const newValue = currentTarget.value;
-      onInputChange(newValue);
+      onTextAreaChange(newValue);
     }
   }
 
@@ -20,12 +21,12 @@ export default function TextInput({
         {labelDescription}
       </label>
 
-      <input
-        autoFocus={autoFocus}
+      <textarea
         id={id}
         className="border p-1"
-        type="text"
-        value={inputValue}
+        maxLength={maxLength}
+        rows={rows}
+        value={textAreaValue}
         onChange={handleInputChange}
       />
     </div>
