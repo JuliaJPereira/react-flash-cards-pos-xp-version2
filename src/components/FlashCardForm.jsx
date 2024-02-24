@@ -2,10 +2,12 @@ import { useState } from 'react';
 import TextArea from './TextArea';
 import TextInput from './TextInput';
 import Button from './Button';
+import Error from './Error';
 
 export default function FlashCardForm({ createMode = true, onPersist = null }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [error, setError] = useState('');
 
   function handleTitleChange(newTitle) {
     setTitle(newTitle);
@@ -20,11 +22,20 @@ export default function FlashCardForm({ createMode = true, onPersist = null }) {
     setDescription('');
   }
 
+  function validateForm() {
+    return title.trim() !== '' && description.trim() !== '';
+  }
+
   function handleFormSubmit(event) {
     event.preventDefault();
-    if (onPersist) {
-      onPersist({ createMode, title, setTitle });
-      clearFields();
+    if (validateForm()) {
+      setError('');
+      if (onPersist) {
+        onPersist({ title, description });
+        clearFields();
+      }
+    } else {
+      setError('Título e Descrição são obrigatórios');
     }
   }
 
@@ -50,13 +61,16 @@ export default function FlashCardForm({ createMode = true, onPersist = null }) {
         textAreaValue={description}
         onTextAreaChange={handleDescriptionChange}
       />
-      <div className="flex items-center justify-end">
-        <Button colorClass="bg-red-200" type="reset">
-          Limpar
-        </Button>
-        <Button colorClass="bg-green-300" type="submit">
-          Salvar
-        </Button>
+      <div className="flex items-center justify-between">
+        {error.trim() !== '' ? <Error>{error}</Error> : <span>&nbsp;</span>}
+        <div>
+          <Button colorClass="bg-red-200" type="reset">
+            Limpar
+          </Button>
+          <Button colorClass="bg-green-300" type="submit">
+            Salvar
+          </Button>
+        </div>
       </div>
     </form>
   );

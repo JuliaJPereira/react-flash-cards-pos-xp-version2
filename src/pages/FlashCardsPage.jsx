@@ -13,6 +13,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import FlashCardItem from '../components/FlashCardItem';
 import FlashCardForm from '../components/FlashCardForm';
+import { getNewId } from '../services/idService';
 
 export default function FlashCardsPage() {
   // BackEnd
@@ -110,9 +111,10 @@ export default function FlashCardsPage() {
     setSelectedTab(tabIndex);
   }
 
-  function handlePersist(createMode, title, description) {
+  function handlePersist({ title, description }) {
     if (createMode) {
-      console.log('inserção');
+      const newFlashCard = { id: getNewId(), title, description };
+      setAllCards([...allCards, newFlashCard]);
     } else {
       console.log('edição');
     }
