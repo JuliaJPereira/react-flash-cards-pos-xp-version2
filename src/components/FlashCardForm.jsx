@@ -1,13 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TextArea from './TextArea';
 import TextInput from './TextInput';
 import Button from './Button';
 import Error from './Error';
 
-export default function FlashCardForm({ createMode = true, onPersist = null }) {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+export default function FlashCardForm({
+  createMode = true,
+  onPersist = null,
+  children: flashCard = null,
+}) {
+  const [title, setTitle] = useState(flashCard?.title || '');
+  const [description, setDescription] = useState(flashCard?.description || '');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (createMode) {
+      clearFields();
+    }
+  }, [createMode]);
+
+  console.log(flashCard);
 
   function handleTitleChange(newTitle) {
     setTitle(newTitle);

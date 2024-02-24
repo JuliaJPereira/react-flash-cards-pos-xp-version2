@@ -159,7 +159,9 @@ export default function FlashCardsPage() {
                 Novo flash card
               </Button>
             </div>
-            <FlashCardForm createMode={createMode} onPersist={handlePersist} />
+            <FlashCardForm createMode={createMode} onPersist={handlePersist}>
+              {selectedFlashCard}
+            </FlashCardForm>
           </TabPanel>
           <TabPanel>
             <div className="text-center mb-4">
