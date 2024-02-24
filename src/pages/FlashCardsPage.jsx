@@ -22,6 +22,7 @@ export default function FlashCardsPage() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [createMode, setCreateMode] = useState(true);
 
   const [radioButtonShowTitle, setRadioButtonShowTitle] = useState(true);
 
